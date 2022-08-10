@@ -83,7 +83,7 @@ def deleteUser(request, pk):
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def getPosts(request):
-    posts = Post.objects.all()
+    posts = Post.objects.all().order_by('-created')
     serializer = PostSerializer(posts, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -100,6 +100,7 @@ def getPostDetail(request, pk):
 @permission_classes([IsAuthenticated])
 def createPost(request):
     authenticatedUser = request.user
+    author = User.objects.get(id=authenticatedUser.id)
     post = {
         'author': authenticatedUser.id,
         'body': request.data.get('body')
@@ -107,7 +108,7 @@ def createPost(request):
     serializer = PostSerializer(data=post)
 
     if not serializer.is_valid():
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     serializer.save()
     return Response(serializer.data, status=status.HTTP_201_CREATED)
