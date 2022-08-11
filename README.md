@@ -6,7 +6,7 @@
 -   python3-pip
 -   python3-venv
 
-#### Create your virtual environment
+#### Create your virtual environment:
 
 ```shell
 $ python3 -m venv venv
@@ -18,25 +18,25 @@ $ python3 -m venv venv
 $ source venv/bin/activate
 ```
 
-#### Install required packages on your virtual environment
+#### Install required packages on your virtual environment:
 
 ```shell
 $ python3 -m pip install -r requirements.txt
 ```
 
-#### Run migrations
+#### Run migrations:
 
 ```shell
 $ python3 manage.py migrate
 ```
 
-#### Run the project
+#### Run the project:
 
 ```shell
 $ python3 manage.py runserver
 ```
 
-## References:
+## References
 
 -   https://docs.djangoproject.com/en/4.1/
 -   https://www.django-rest-framework.org/tutorial/quickstart/
