@@ -1,11 +1,13 @@
-from dataclasses import fields
-from rest_framework import serializers
+from rest_framework import serializers, validators
 from django.contrib.auth.models import User
 from .models import Post
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 
 class UserSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField(
+        validators=[validators.UniqueValidator(queryset=User.objects.all())]
+    )
 
     class Meta:
         model = User
@@ -18,6 +20,8 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class PostSerializer(serializers.ModelSerializer):
+    author = serializers.StringRelatedField(many=False)
+
     class Meta:
         model = Post
         fields = '__all__'
@@ -29,5 +33,6 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         token = super().get_token(user)
 
         token['username'] = user.username
+        token['email'] = user.email
 
         return token
