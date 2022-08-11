@@ -18,4 +18,5 @@ urlpatterns = [
 
     path('token/', views.MyTokenObtainPairView.as_view()),
     path('token/refresh/', TokenRefreshView.as_view()),
+    path('logout/', views.logout)
 ]
