@@ -28,8 +28,8 @@ def getUsers(request):
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def getUserDetail(request, pk):
-    post = User.objects.get(id=pk)
-    serializer = UserSerializer(post, many=False)
+    user = User.objects.get(username=pk)
+    serializer = UserSerializer(user, many=False)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
