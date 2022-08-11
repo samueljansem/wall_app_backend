@@ -1,7 +1,7 @@
 from urllib import response
 from rest_framework.permissions import (AllowAny, IsAuthenticated)
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework import serializers, status, generics, views
+from rest_framework import serializers, status
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.response import Response
@@ -143,10 +143,6 @@ def deletePost(request, pk):
     return Response(status=status.HTTP_200_OK)
 
 
-class MyTokenObtainPairView(TokenObtainPairView):
-    serializer_class = MyTokenObtainPairSerializer
-
-
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def logout(request):
@@ -157,3 +153,7 @@ def logout(request):
         return Response(status=status.HTTP_205_RESET_CONTENT)
     except Exception as e:
         return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer

@@ -1,5 +1,6 @@
 from rest_framework import serializers, validators
 from django.contrib.auth.models import User
+from django.contrib.auth.hashers import make_password
 from .models import Post
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
@@ -8,6 +9,9 @@ class UserSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(
         validators=[validators.UniqueValidator(queryset=User.objects.all())]
     )
+
+    def validate_password(self, value: str) -> str:
+        return make_password(value)
 
     class Meta:
         model = User
