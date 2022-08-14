@@ -24,8 +24,6 @@ class TestSetup(APITestCase):
             'password': '12345678'
         }
 
-        print(self.signup_url)
-
         response = self.client.post(self.signup_url, credentials)
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)

@@ -18,7 +18,6 @@ def send_welcome_email(text='', subject='', to_emails=[]):
     txt_part = MIMEText(text, 'plain')
     msg.attach(txt_part)
     msg_str = msg.as_string()
-    print(env('SMTP_HOST'))
     server = smtplib.SMTP(host=env('SMTP_HOST'), port=env('SMTP_PORT'))
     server.ehlo()
     server.starttls()
