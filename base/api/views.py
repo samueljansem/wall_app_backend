@@ -96,18 +96,18 @@ def getPostDetail(request, pk):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def createPost(request):
-    authenticatedUser = request.user
-    author = User.objects.get(id=authenticatedUser.id)
+    author = User.objects.get(id=request.user.id)
+
     post = {
-        'author': authenticatedUser.id,
         'body': request.data.get('body')
     }
+
     serializer = PostSerializer(data=post)
 
     if not serializer.is_valid():
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    serializer.save()
+    serializer.save(author=author)
     return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 

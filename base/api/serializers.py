@@ -10,12 +10,18 @@ class UserSerializer(serializers.ModelSerializer):
         validators=[validators.UniqueValidator(queryset=User.objects.all())]
     )
 
+    posts = serializers.SerializerMethodField()
+
     def validate_password(self, value: str) -> str:
         return make_password(value)
 
+    def get_posts(self, obj):
+        total = Post.objects.filter(author_id=obj.id).count()
+        return total
+
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'password']
+        fields = ['id', 'username', 'email', 'password', 'posts']
         extra_kwargs = {
             'password': {
                 'write_only': True
