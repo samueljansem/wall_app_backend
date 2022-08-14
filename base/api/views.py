@@ -12,6 +12,8 @@ from .serializers import (
     PostSerializer,
     UserSerializer
 )
+from .smtp import send_welcome_email
+import threading
 
 
 @api_view(['GET'])
@@ -39,9 +41,19 @@ def createUser(request):
         raise serializers.ValidationError('This user already exists')
 
     if not serializer.is_valid():
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     serializer.save()
+    username = request.data.get('username')
+    email = request.data.get('email')
+    text = f'Welcome, {username}'
+    subject = f'Welcome, {username}'
+
+    t = threading.Thread(target=send_welcome_email,
+                         args=(text, subject, [email]))
+
+    t.start()
+
     return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
